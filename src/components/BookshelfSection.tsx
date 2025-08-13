@@ -63,7 +63,7 @@ export default function BookshelfSection() {
   }
 
   return (
-    <section className="py-20 bg-primary-light relative overflow-hidden">
+    <section id="bookshelf" className="py-20 bg-primary-light relative overflow-hidden">
       <div className="container mx-auto px-6">
         <h2 className="text-4xl font-bold text-primary text-center mb-16">
           My Bookshelf

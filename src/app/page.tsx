@@ -1,11 +1,14 @@
 import ScrollableSkills from '@/components/ScrollableSkills'
 import BookshelfSection from '@/components/BookshelfSection'
+import Navigation from '@/components/Navigation'
 
 export default function Home() {
   return (
-    <main className="min-h-screen">
+    <>
+      <Navigation />
+      <main className="min-h-screen pt-20">
       {/* Hero Section */}
-      <section className="hero flex items-center justify-center min-h-screen text-center px-4 bg-primary text-primary-light">
+        <section id="home" className="hero flex items-center justify-center min-h-screen text-center px-4 bg-primary text-primary-light">
         <div className="max-w-4xl mx-auto">
           <h1 className="text-5xl md:text-7xl font-bold mb-6 text-primary-light">
             Hi, I'm <span className="text-primary-accent">Meghna</span>
@@ -205,7 +208,7 @@ export default function Home() {
       </section>
 
       {/* Projects Section */}
-      <section className="py-20 px-4 bg-primary">
+        <section id="projects" className="py-20 px-4 bg-primary">
         <div className="max-w-6xl mx-auto">
           <h2 className="text-4xl font-bold text-center mb-12 text-primary-light">
             Projects
@@ -246,5 +249,6 @@ export default function Home() {
       {/* Bookshelf Section */}
       <BookshelfSection />
     </main>
+    </>
   )
 }
