@@ -7,5 +7,10 @@ out/
 *.log
 .env
 .env.*
+.env.local
+
+npm-debug.log*
+# (extra-safe root-anchored)
+/.next
 
 
