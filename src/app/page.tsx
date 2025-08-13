@@ -1,4 +1,5 @@
 import ScrollableSkills from '@/components/ScrollableSkills'
+import BookshelfSection from '@/components/BookshelfSection'
 
 export default function Home() {
   return (
@@ -68,8 +69,8 @@ export default function Home() {
                   </a>
                   <a href="https://www.hackerrank.com/meghna_prd" className="text-primary hover:text-primary-accent transition-colors">
                     <span className="sr-only">HackerRank</span>
-                    <svg className="w-12 h-8" fill="currentColor" viewBox="0 0 24 24">
-                      <path d="M12 0c1.285 0 9.75 4.886 10.392 6 .645 1.115.645 10.885 0 12C21.75 19.114 13.287 24 12 24s-9.75-4.886-10.392-6C1.002 16.885 1.002 7.115 1.608 6 2.25 4.886 10.715 0 12 0zm2.295 6.799c-.141 0-.258.115-.258.258v3.875H9.963V6.908c0-.141-.115-.258-.258-.258-.141 0-.258.115-.258.258v10.534c0 .141.115.258.258.258.141 0 .258-.115.258-.258v-4.629h4.074v4.629c0 .141.115.258.258.258.141 0 .258-.115.258-.258V6.908c0-.141-.115-.258-.258-.258z" />
+                    <svg className="w-8 h-8" fill="currentColor" viewBox="0 0 32 32">
+                      <path d="M16 0c1.714 0 13 6.516 13.854 8 0.859 1.484 0.859 14.516 0 16s-12.141 8-13.854 8c-1.714 0-13-6.516-13.859-8-0.854-1.484-0.854-14.516 0-16 0.859-1.484 12.146-8 13.859-8zM19.063 9.068c-0.193 0-0.349 0.151-0.349 0.344v5.167h-5.427v-5.37h0.932c0.188 0 0.339-0.151 0.339-0.344 0-0.125-0.068-0.234-0.161-0.292l-2.099-2.010c-0.063-0.089-0.188-0.146-0.302-0.146-0.109 0-0.214 0.057-0.276 0.141l-2.24 2.016c-0.094 0.063-0.161 0.167-0.161 0.292 0 0.188 0.151 0.344 0.344 0.344h0.938l0.010 13.38c0 0.193 0.146 0.344 0.339 0.344h1.99c0.188 0 0.344-0.151 0.344-0.344v-5.339h5.432v5.536h-0.932c-0.193 0-0.344 0.156-0.344 0.344 0 0.125 0.068 0.234 0.161 0.292l2.104 2.016c0.057 0.083 0.188 0.146 0.302 0.146s0.208-0.063 0.276-0.146l2.24-2.016c0.094-0.057 0.161-0.167 0.161-0.292 0-0.188-0.156-0.344-0.344-0.344h-0.938l-0.010-13.375c0-0.198-0.151-0.349-0.339-0.349h-1.99z"/>
                     </svg>
                   </a>
                   <a href="mailto:meghna.prd@gmail.com" className="text-primary hover:text-primary-accent transition-colors">
@@ -92,7 +93,7 @@ export default function Home() {
 
       {/* Divider */}
       <div className="flex justify-center py-4 bg-primary-light">
-        <div className="w-60 border-t-4 border-dotted border-primary/40"></div>
+        <div className="w-80 border-t-4 border-dotted border-primary/40"></div>
       </div>
 
       {/* Experience Timeline Section */}
@@ -241,6 +242,9 @@ export default function Home() {
           </div>
         </div>
       </section>
+
+      {/* Bookshelf Section */}
+      <BookshelfSection />
     </main>
   )
 }
