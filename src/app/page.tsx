@@ -1,12 +1,13 @@
 import ScrollableSkills from '@/components/ScrollableSkills'
 import BookshelfSection from '@/components/BookshelfSection'
 import Navigation from '@/components/Navigation'
+import Footer from '@/components/Footer'
 
 export default function Home() {
   return (
     <>
       <Navigation />
-      <main className="min-h-screen pt-20">
+      <main className="min-h-screen">
       {/* Hero Section */}
         <section id="home" className="hero flex items-center justify-center min-h-screen text-center px-4 bg-primary text-primary-light">
         <div className="max-w-4xl mx-auto">
@@ -249,6 +250,7 @@ export default function Home() {
       {/* Bookshelf Section */}
       <BookshelfSection />
     </main>
+    <Footer />
     </>
   )
 }
