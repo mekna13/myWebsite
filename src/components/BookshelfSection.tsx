@@ -1,65 +1,83 @@
 'use client'
 
+import { useState, useEffect } from 'react'
 import BookCover from './BookCover'
+import { Book } from '@/lib/types'
 
-interface BookReview {
-  _id: string
-  title: string
-  review: string
-  author: string
-  bookCoverLink: string
+async function fetchBooks(): Promise<Book[]> {
+  try {
+    const response = await fetch('/api/books')
+    const result = await response.json()
+    
+    if (result.success) {
+      return result.data
+    } else {
+      console.error('Failed to fetch books:', result.error)
+      return []
+    }
+  } catch (error) {
+    console.error('Error fetching books:', error)
+    return []
+  }
 }
 
-const books: BookReview[] = [
-  {
-    _id: "60543dad5c9b5c001591d60f",
-    title: "I Contain Multitudes",
-    review: "This book other than being a really fascinating account of the microbi...",
-    author: "Ed Yong",
-    bookCoverLink: "https://m.media-amazon.com/images/I/91Sqv2huR5L._AC_UF1000,1000_QL80_.jpg"
-  },
-  {
-    _id: "60543d3d5c9b5c001591d60e",
-    title: "Homo Deus",
-    review: "In the future predicted by Yuval Noah Harari in his book 'Homo Deus'...",
-    author: "Yuval Noah Harari",
-    bookCoverLink: "https://images-na.ssl-images-amazon.com/images/I/71N6LbagzSL.jpg"
-  },
-  {
-    _id: "6128c5c3cc49d10016263f05",
-    title: "Flow: The Psychology of Optimal Experience",
-    review: "A Pixar movie called Soul perfectly captures the main idea in the...",
-    author: "Mihaly Csikszentmihalyi",
-    bookCoverLink: "https://images-na.ssl-images-amazon.com/images/I/71XvcOz-HlL.jpg"
-  },
-  {
-    _id: "603a19ddb34d340f0047a019",
-    title: "On Earth We're Briefly Gorgeous",
-    review: "Reading this book felt like living through a collection of memories...",
-    author: "Ocean Vuong",
-    bookCoverLink: "https://i.gr-assets.com/images/S/compressed.photo.goodreads.com/books/1555315092l/41880609.jpg"
-  },
-  {
-    _id: "sample1",
-    title: "The Midnight Library",
-    review: "A profound exploration of life's infinite possibilities...",
-    author: "Matt Haig",
-    bookCoverLink: "https://images-na.ssl-images-amazon.com/images/P/0525559477.01.L.jpg"
-  },
-  {
-    _id: "sample2",
-    title: "Atomic Habits",
-    review: "A practical guide to breaking bad habits and forming good ones...",
-    author: "James Clear",
-    bookCoverLink: "https://images-na.ssl-images-amazon.com/images/P/0735211299.01.L.jpg"
-  }
-]
-
 export default function BookshelfSection() {
+  const [books, setBooks] = useState<Book[]>([])
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState<string | null>(null)
+
+  useEffect(() => {
+    async function loadBooks() {
+      try {
+        setLoading(true)
+        const booksData = await fetchBooks()
+        setBooks(booksData)
+        setError(null)
+      } catch (err) {
+        setError('Failed to load books')
+        console.error('Error loading books:', err)
+      } finally {
+        setLoading(false)
+      }
+    }
+
+    loadBooks()
+  }, [])
+
   const handleBookClick = (bookId: string) => {
     console.log(`Navigate to book review: ${bookId}`)
     // You can replace this with actual navigation logic:
     // router.push(`/books/${bookId}`) or open a modal
+  }
+
+  if (loading) {
+    return (
+      <section id="bookshelf" className="py-20 bg-primary-light relative overflow-hidden">
+        <div className="container mx-auto px-6">
+          <h2 className="text-4xl font-bold text-primary text-center mb-16">
+            My Bookshelf
+          </h2>
+          <div className="flex justify-center items-center py-20">
+            <div className="text-primary">Loading books...</div>
+          </div>
+        </div>
+      </section>
+    )
+  }
+
+  if (error) {
+    return (
+      <section id="bookshelf" className="py-20 bg-primary-light relative overflow-hidden">
+        <div className="container mx-auto px-6">
+          <h2 className="text-4xl font-bold text-primary text-center mb-16">
+            My Bookshelf
+          </h2>
+          <div className="flex justify-center items-center py-20">
+            <div className="text-primary">Error: {error}</div>
+          </div>
+        </div>
+      </section>
+    )
   }
 
   return (
@@ -93,29 +111,41 @@ export default function BookshelfSection() {
         {/* Reading Stats */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mb-12">
           <div className="text-center">
-            <div className="text-3xl font-bold text-primary-accent mb-1">6</div>
+            <div className="text-3xl font-bold text-primary-accent mb-1">{books.length}</div>
             <div className="text-sm text-primary">Books Reviewed</div>
           </div>
           <div className="text-center">
-            <div className="text-3xl font-bold text-primary-accent mb-1">3</div>
-            <div className="text-sm text-primary">Currently Reading</div>
+            <div className="text-3xl font-bold text-primary-accent mb-1">2024</div>
+            <div className="text-sm text-primary">Current Year</div>
           </div>
           <div className="text-center">
-            <div className="text-3xl font-bold text-primary-accent mb-1">5★</div>
-            <div className="text-sm text-primary">Average Rating</div>
+            <div className="text-3xl font-bold text-primary-accent mb-1">Fiction</div>
+            <div className="text-sm text-primary">Favorite Genre</div>
           </div>
           <div className="text-center">
-            <div className="text-3xl font-bold text-primary-accent mb-1">∞</div>
-            <div className="text-sm text-primary">Goal This Year</div>
+            <div className="text-3xl font-bold text-primary-accent mb-1">⭐ 4.5</div>
+            <div className="text-sm text-primary">Avg Rating</div>
           </div>
         </div>
         
-        {/* Inspirational Quote */}
-        <div className="text-center">
-          <p className="text-primary text-lg italic mb-2">
-            "A room without books is like a body without a soul."
+        {/* CTA Section */}
+        <div className="text-center bg-primary/5 rounded-lg p-8">
+          <h3 className="text-2xl font-semibold text-primary mb-4">
+            Book Recommendations?
+          </h3>
+          <p className="text-primary/80 mb-6 max-w-2xl mx-auto">
+            I'm always looking for my next great read. If you have book recommendations that align 
+            with my interests in psychology, philosophy, and technology, I'd love to hear from you!
           </p>
-          <p className="text-primary/70 text-sm">— Marcus Tullius Cicero</p>
+          <a 
+            href="mailto:meghna.prd@gmail.com?subject=Book Recommendation" 
+            className="inline-flex items-center gap-2 bg-primary text-primary-light px-6 py-3 rounded-md hover:bg-primary-accent hover:text-primary transition-colors"
+          >
+            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.746 0 3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
+            </svg>
+            Send a Recommendation
+          </a>
         </div>
       </div>
     </section>
