@@ -42,9 +42,9 @@ export async function PUT(
     const body: ProjectFormData = await request.json()
     
     // Validate required fields
-    if (!body.title || !body.description || !body.github || !body.directLink) {
+    if (!body.title || !body.description) {
       return NextResponse.json(
-        { success: false, error: 'Title, description, github, and directLink are required' },
+        { success: false, error: 'Title and description are required' },
         { status: 400 }
       )
     }

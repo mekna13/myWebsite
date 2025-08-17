@@ -8,19 +8,19 @@ interface SkillCategory {
 const skillsData: SkillCategory[] = [
   {
     category: "Frontend Dev",
-    skills: ["Angular", "React", "Next.js", "HTML", "CSS SCSS", "Vue.js", "TypeScript", "JavaScript"]
+    skills: ["Angular", "React", "Next.js", "HTML", "CSS SCSS", "TypeScript", "JavaScript"]
   },
   {
     category: "Languages", 
-    skills: ["Javascript", "Typescript", "Python", "Java", "C++", "Go", "Rust", "PHP"]
+    skills: ["Javascript", "Typescript", "Python", "Java", "C++"]
   },
   {
     category: "Cloud & DevOps",
-    skills: ["AWS", "Heroku", "Docker", "Linux", "Kubernetes", "Jenkins", "Nginx", "Apache", "Git", "Github", "GitLab"]
+    skills: ["AWS", "Heroku", "Docker", "Linux", "Nginx", "Git", "Github", "GitLab"]
   },
   {
     category: "Databases & APIs",
-    skills: ["MySQL", "MongoDB", "Firebase", "PostgreSQL", "Redis", "RESTful APIs", "GraphQL", "WebSocket", "OAuth", "JWT"]
+    skills: ["MySQL", "MongoDB", "Firebase", "PostgreSQL", "Redis", "RESTful APIs", "GraphQL", "OAuth", "JWT"]
   }
 ]
 

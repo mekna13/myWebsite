@@ -125,26 +125,6 @@ export default function BookshelfSection() {
             <div className="text-sm text-primary">Avg Rating</div>
           </div>
         </div>
-        
-        {/* CTA Section */}
-        <div className="text-center bg-primary/5 rounded-lg p-8">
-          <h3 className="text-2xl font-semibold text-primary mb-4">
-            Book Recommendations?
-          </h3>
-          <p className="text-primary/80 mb-6 max-w-2xl mx-auto">
-            I'm always looking for my next great read. If you have book recommendations that align 
-            with my interests in psychology, philosophy, and technology, I'd love to hear from you!
-          </p>
-          <a 
-            href="mailto:meghna.prd@gmail.com?subject=Book Recommendation" 
-            className="inline-flex items-center gap-2 bg-primary text-primary-light px-6 py-3 rounded-md hover:bg-primary-accent hover:text-primary transition-colors"
-          >
-            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.746 0 3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
-            </svg>
-            Send a Recommendation
-          </a>
-        </div>
       </div>
     </section>
   )
