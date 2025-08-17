@@ -6,11 +6,12 @@ import { ObjectId } from 'mongodb'
 // GET /api/books/[id] - Fetch single book
 export async function GET(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
+  const { id } = await params
   try {
     const { db } = await connectToDatabase()
-    const book = await db.collection('books').findOne({ _id: new ObjectId(params.id) })
+    const book = await db.collection('books').findOne({ _id: new ObjectId(id) })
     
     if (!book) {
       return NextResponse.json(
@@ -35,8 +36,9 @@ export async function GET(
 // PUT /api/books/[id] - Update book
 export async function PUT(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
+  const { id } = await params
   try {
     const { db } = await connectToDatabase()
     const body: BookFormData = await request.json()
@@ -50,7 +52,7 @@ export async function PUT(
     }
 
     const result = await db.collection('books').updateOne(
-      { _id: new ObjectId(params.id) },
+      { _id: new ObjectId(id) },
       { $set: body }
     )
     
@@ -63,7 +65,7 @@ export async function PUT(
     
     return NextResponse.json({
       success: true,
-      data: { _id: params.id, ...body }
+      data: { _id: id, ...body }
     })
   } catch (error) {
     console.error('Error updating book:', error)
@@ -77,11 +79,12 @@ export async function PUT(
 // DELETE /api/books/[id] - Delete book
 export async function DELETE(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
+  const { id } = await params
   try {
     const { db } = await connectToDatabase()
-    const result = await db.collection('books').deleteOne({ _id: new ObjectId(params.id) })
+    const result = await db.collection('books').deleteOne({ _id: new ObjectId(id) })
     
     if (result.deletedCount === 0) {
       return NextResponse.json(

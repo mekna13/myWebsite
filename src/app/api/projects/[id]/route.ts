@@ -6,11 +6,12 @@ import { ObjectId } from 'mongodb'
 // GET /api/projects/[id] - Fetch single project
 export async function GET(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
+  const { id } = await params
   try {
     const { db } = await connectToDatabase()
-    const project = await db.collection('projects').findOne({ _id: new ObjectId(params.id) })
+    const project = await db.collection('projects').findOne({ _id: new ObjectId(id) })
     
     if (!project) {
       return NextResponse.json(
@@ -35,8 +36,9 @@ export async function GET(
 // PUT /api/projects/[id] - Update project
 export async function PUT(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
+  const { id } = await params
   try {
     const { db } = await connectToDatabase()
     const body: ProjectFormData = await request.json()
@@ -55,7 +57,7 @@ export async function PUT(
     }
 
     const result = await db.collection('projects').updateOne(
-      { _id: new ObjectId(params.id) },
+      { _id: new ObjectId(id) },
       { $set: updateData }
     )
     
@@ -68,7 +70,7 @@ export async function PUT(
     
     return NextResponse.json({
       success: true,
-      data: { _id: params.id, ...updateData }
+      data: { _id: id, ...updateData }
     })
   } catch (error) {
     console.error('Error updating project:', error)
@@ -82,11 +84,12 @@ export async function PUT(
 // DELETE /api/projects/[id] - Delete project
 export async function DELETE(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
+  const { id } = await params
   try {
     const { db } = await connectToDatabase()
-    const result = await db.collection('projects').deleteOne({ _id: new ObjectId(params.id) })
+    const result = await db.collection('projects').deleteOne({ _id: new ObjectId(id) })
     
     if (result.deletedCount === 0) {
       return NextResponse.json(
