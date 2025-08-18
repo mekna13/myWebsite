@@ -5,8 +5,10 @@ export default function Footer() {
         <p className="text-sm">
           Made with <span className="text-primary-accent">♥</span> using{' '}
           <span className="font-semibold">Next.js</span>,{' '}
-          <span className="font-semibold">TypeScript</span>, and{' '}
+          <span className="font-semibold">TypeScript</span>, 
           <span className="font-semibold">Tailwind CSS</span>
+          , and{' '}
+          <span className="font-semibold">Claude Code</span>
         </p>
         <p className="text-xs text-primary-light/70 mt-2">
           © 2024 Meghna Pradhan. All rights reserved.

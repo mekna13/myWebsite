@@ -6,6 +6,7 @@ export default function Navigation() {
   const [activeSection, setActiveSection] = useState('about')
   const [isVisible, setIsVisible] = useState(true)
   const [lastScrollY, setLastScrollY] = useState(0)
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
 
   useEffect(() => {
     const handleScroll = () => {
@@ -80,37 +81,40 @@ export default function Navigation() {
           {/* Mobile Menu Button - Centered */}
           <div className="md:hidden">
             <button
-              onClick={() => {
-                const mobileMenu = document.getElementById('mobile-menu')
-                if (mobileMenu) {
-                  mobileMenu.classList.toggle('hidden')
-                }
-              }}
-              className="text-primary-light hover:text-primary-accent"
+              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+              className="text-primary-light hover:text-primary-accent transition-transform duration-200"
             >
-              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
+              <svg 
+                className={`w-6 h-6 transition-transform duration-200 ${isMobileMenuOpen ? 'rotate-90' : ''}`} 
+                fill="none" 
+                stroke="currentColor" 
+                viewBox="0 0 24 24"
+              >
+                {isMobileMenuOpen ? (
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                ) : (
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
+                )}
               </svg>
             </button>
           </div>
         </div>
 
         {/* Mobile Menu */}
-        <div id="mobile-menu" className="hidden md:hidden mt-4 pb-4">
-          <div className="flex flex-col space-y-3 items-center">
+        <div className={`md:hidden overflow-hidden transition-all duration-300 ${
+          isMobileMenuOpen ? 'max-h-48 opacity-100' : 'max-h-0 opacity-0'
+        }`}>
+          <div className="flex flex-col space-y-3 items-center pt-4 pb-4">
             {navItems.map((item) => (
               <button
                 key={item.id}
                 onClick={() => {
                   scrollToSection(item.id)
-                  const mobileMenu = document.getElementById('mobile-menu')
-                  if (mobileMenu) {
-                    mobileMenu.classList.add('hidden')
-                  }
+                  setIsMobileMenuOpen(false)
                 }}
-                className={`text-sm font-medium transition-colors duration-200 hover:text-primary-accent ${
+                className={`text-sm font-medium transition-colors duration-200 hover:text-primary-accent py-2 px-4 rounded ${
                   activeSection === item.id 
-                    ? 'text-primary-accent' 
+                    ? 'text-primary-accent bg-primary-accent/10' 
                   : 'text-primary-light/70'
                 }`}
               >
