@@ -7,8 +7,6 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 ```bash
 # Development server
 npm run dev
-# Clean build and restart dev server (recommended for clearing cache issues)
-rm -rf .next && npm run dev
 
 # Production build
 npm run build
@@ -16,101 +14,85 @@ npm start
 
 # Linting
 npm run lint
+
+# Clean build (recommended for clearing cache issues)
+rm -rf .next && npm run dev
 ```
 
 ## Project Architecture
 
-This is a **Next.js 15 App Router** portfolio website built with TypeScript and Tailwind CSS. The site is a single-page application with smooth scrolling navigation between sections.
+This is a **Next.js 15 App Router** portfolio website with TypeScript, Tailwind CSS, and MongoDB Atlas integration. The site follows a single-page application pattern with smooth scrolling navigation.
 
-### Key Architecture Patterns
+### Core Architecture Patterns
 
-**Single Page Layout**: All content lives in `src/app/page.tsx` as one long page with multiple sections:
-- Hero section (`#home`) 
-- About section (`#about`) with profile and scrollable skills
+**Single-Page Layout**: All content lives in `src/app/page.tsx` with multiple scrollable sections:
+- Hero (`#home`) 
+- About (`#about`) with profile and skills
 - Experience timeline
-- Projects section (`#projects`)
-- Bookshelf section (`#bookshelf`)
+- Projects (`#projects`)
+- Bookshelf (`#bookshelf`)
 
-**Client-Side Components**: All interactive components use `'use client'` directive:
-- `Navigation.tsx` - Fixed header with smooth scroll navigation and active section tracking
-- `BookshelfSection.tsx` - Interactive book review cards
-- `ScrollableSkills.tsx` - Horizontal scrolling skill tags
-- `BookCover.tsx` - Individual book cover display component
+**Client-Side Components**: All interactive UI uses `'use client'` directive for React hooks and event handling.
 
-**Navigation System**: Uses anchor links and `scrollIntoView()` with scroll event listeners to track active sections. Navigation items: Projects, About Me, Bookshelf (centered layout, no home link).
-
-### Custom Theme System
-
-**Tailwind Color Palette** (`tailwind.config.js`):
-- `primary` (dark-purple): `#9a8194` - Main color for text, backgrounds
-- `primary-light` (light-bg): `#f7f0f0` - Light backgrounds and accents
-- `primary-accent` (bright-pink): `#ffd9f6` - Hover effects and highlights
-- `dark-purple`: Same as primary, for navigation background
-- `light-bg`: Same as primary-light, for navigation text
-
-**Typography**: Uses Roboto Mono font family throughout the site.
-
-**Custom Animations**: Horizontal scrolling animations for skills section with varying speeds (25s, 30s, 40s).
+**Navigation System**: Fixed navigation with scroll-based active section tracking using `scrollIntoView()` and scroll event listeners. Navigation items are centered: Projects, About Me, Bookshelf (no home link).
 
 ### Data Management
 
-**Static Data**: Book reviews are currently hardcoded in `BookshelfSection.tsx` with this interface:
-```typescript
-interface BookReview {
-  _id: string
-  title: string
-  review: string
-  author: string
-  bookCoverLink: string
-}
-```
+**MongoDB Integration**: Full CRUD API routes for content management:
+- Books: `/api/books` and `/api/books/[id]`  
+- Projects: `/api/projects` and `/api/projects/[id]`
+- Resume: `/api/resume` and `/api/resume/[id]`
+- Authentication: NextAuth with credentials provider
 
-**Future Database Integration**: The codebase is prepared for MongoDB Atlas integration (referenced in todo items but not yet implemented).
+**Type Safety**: Comprehensive TypeScript interfaces in `src/lib/types.ts` for all data models (Book, Project, Resume, Admin) and API responses.
 
-### Component Structure
+**Database Connection**: MongoDB Atlas with connection pooling and environment-based configuration in `src/lib/mongodb.ts`.
 
-**Modular Design**: Each major section is a separate component imported into the main page:
-- Navigation is rendered outside main content for fixed positioning
-- ScrollableSkills is embedded within About section
-- BookshelfSection contains BookCover children
-- All sections have proper `id` attributes for navigation targeting
+### Authentication & Admin System
 
-**Responsive Design**: Uses Tailwind's responsive classes (`md:`, `lg:`) with mobile-first approach. Navigation includes hamburger menu for mobile.
+**NextAuth Configuration**: Credentials-based authentication with bcrypt password hashing and JWT sessions in `src/lib/auth.ts`.
 
-### Styling Patterns
+**Admin Routes**: Protected admin interface at `/admin/*` for content management:
+- Dashboard, login, and CRUD pages for books/projects/resume
+- Middleware protection for admin routes
+- File upload via Cloudinary integration (images and PDFs)
 
-**Section Layout**: Each major section follows this pattern:
-- Full-width container with `py-20 px-4`
-- Max-width content container (`max-w-6xl mx-auto`)
-- Centered headings with `text-4xl font-bold text-center mb-12`
+### Styling Architecture
 
-**Color Usage**:
-- Hero: `bg-primary text-primary-light` (dark purple background, light text)
-- About/Timeline: `bg-primary-light` with `text-primary` (light background, dark text)
-- Projects: `bg-primary text-primary-light` (dark background, light text)
-- Navigation: `bg-dark-purple` with `text-light-bg` (dark purple background, light text)
+**Custom Tailwind Theme**: Semantic color system in `tailwind.config.js`:
+- `primary` (#9a8194): Main dark purple
+- `primary-light` (#f7f0f0): Light backgrounds  
+- `primary-accent` (#ffd9f6): Hover/accent color
+
+**Component Patterns**: Consistent section layout with `py-20 px-4` spacing, `max-w-6xl mx-auto` containers, and alternating `bg-primary`/`bg-primary-light` backgrounds.
+
+**Custom Animations**: Horizontal scrolling animations for skills section with custom Tailwind keyframes and scrollbar styling plugin.
+
+**Typography**: Roboto Mono font family throughout, configured in root layout.
 
 ### File Organization
 
 ```
 src/
 ├── app/
-│   ├── globals.css     # Tailwind directives and CSS variables
-│   ├── layout.tsx      # Root layout with Roboto Mono font
-│   └── page.tsx        # Main portfolio page with all sections
-├── components/
-│   ├── BookCover.tsx           # Individual book display
-│   ├── BookshelfSection.tsx    # Book reviews section
-│   ├── Navigation.tsx          # Fixed navigation header
-│   └── ScrollableSkills.tsx    # Horizontal scrolling skills
-└── lib/                # (Currently empty, for future utilities)
+│   ├── (routes)/           # Next.js App Router pages
+│   ├── api/               # API route handlers
+│   ├── admin/             # Protected admin interface
+│   ├── globals.css        # Tailwind and global styles
+│   ├── layout.tsx         # Root layout with fonts
+│   └── page.tsx           # Main portfolio SPA
+├── components/            # React components (all client-side)
+├── lib/                   # Utilities (auth, db, types)
+└── providers/             # Context providers (SessionProvider)
 ```
 
-### Key Implementation Notes
+### Key Implementation Details
 
-- Navigation uses scroll event listeners to track active sections
-- All external links (LinkedIn, GitHub, HackerRank, Email) are hardcoded in About section
-- Timeline section includes background images loaded from external URLs
-- Book covers use external Amazon/Goodreads image URLs
-- TypeScript paths configured with `@/*` alias pointing to `src/*`
-- Custom scrollbar styling implemented via Tailwind plugin
+- Navigation auto-hides on scroll down, shows on scroll up
+- Book, project, and resume data fetched from MongoDB via API routes
+- Resume download button appears in About Me section when available
+- External image URLs used for book covers and timeline backgrounds
+- File uploads (images/PDFs) handled via Cloudinary with drag-and-drop UI
+- Responsive design with mobile hamburger menu
+- TypeScript path aliases: `@/*` maps to `src/*`
+- Environment variables required: `MONGODB_URI`, `MONGODB_DB`, `NEXTAUTH_SECRET`, Cloudinary config

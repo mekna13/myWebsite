@@ -1,11 +1,36 @@
+'use client'
+
 import ScrollableSkills from '@/components/ScrollableSkills'
 import BookshelfSection from '@/components/BookshelfSection'
 import Navigation from '@/components/Navigation'
 import Footer from '@/components/Footer'
 import ProjectsSection from '@/components/ProjectsSection'
 import Image from 'next/image'
+import { useEffect, useState } from 'react'
 
 export default function Home() {
+  const [resumeData, setResumeData] = useState<{ url: string; filename: string } | null>(null)
+
+  useEffect(() => {
+    // Fetch resume data
+    const fetchResume = async () => {
+      try {
+        const response = await fetch('/api/resume')
+        const result = await response.json()
+
+        if (result.success) {
+          setResumeData({
+            url: result.data.cloudinaryUrl,
+            filename: result.data.filename
+          })
+        }
+      } catch (error) {
+        console.error('Error fetching resume:', error)
+      }
+    }
+
+    fetchResume()
+  }, [])
   return (
     <>
       <Navigation />
@@ -17,7 +42,7 @@ export default function Home() {
             Hi, I'm <span className="text-primary-accent animate-type">Meghna</span>
           </h1>
             <h3 className="text-lg sm:text-xl md:text-2xl mb-8 opacity-90 leading-relaxed animate-fade-in-up delay-600">
-              Software Engineer / Full-Stack Development /<br className="sm:hidden" />AWS & AI-Driven Development
+              Software Engineer / Full-Stack Development /<br className="sm:hidden" /> AWS & AI-Driven Development
           </h3>
           <div className="flex justify-center animate-fade-in-up delay-900">
             <a 
@@ -91,6 +116,22 @@ export default function Home() {
                     </svg>
                   </a>
                 </div>
+
+                {/* Resume Download Button */}
+                {resumeData && (
+                  <div className="mt-6">
+                    <a
+                      href="/api/resume/download"
+                      className="inline-flex items-center bg-primary text-primary-light px-6 py-3 rounded-md hover:bg-primary-accent hover:text-primary transition-colors font-medium"
+                    >
+                      <svg className="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M8.267 14.68c-.184 0-.308.018-.372.036v1.178c.076.018.171.023.302.023.479 0 .774-.242.774-.651 0-.366-.254-.586-.704-.586zm3.487.012c-.2 0-.33.018-.407.036v2.61c.077.018.201.018.313.018.817.006 1.349-.444 1.349-1.396.006-.83-.479-1.268-1.255-1.268z" />
+                        <path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8l-6-6zM9.498 16.19c-.309.29-.765.42-1.296.42a2.23 2.23 0 01-.308-.018v1.426H7v-3.936A7.558 7.558 0 018.219 14c.557 0 .953.106 1.22.319.254.202.426.533.426.923-.001.392-.131.723-.367.948zm3.807 1.355c-.42.349-1.059.515-1.84.515-.468 0-.799-.03-1.024-.60v-3.917A7.947 7.947 0 0111.66 14c.757 0 1.249.136 1.633.426.415.308.675.799.675 1.504 0 .763-.279 1.29-.663 1.615zM17 14.77h-1.532v.911H16.9v.734h-1.432v1.604h-.906V14.03H17v.74zM14 9h-1V4l5 5h-4z" />
+                      </svg>
+                      Download Resume
+                    </a>
+                  </div>
+                )}
               </div>
             </div>
 

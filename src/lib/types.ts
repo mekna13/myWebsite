@@ -54,3 +54,19 @@ export interface ProjectFormData {
   directLink: string
   img?: string
 }
+
+export interface Resume {
+  _id: string
+  filename: string
+  cloudinaryUrl: string
+  cloudinaryPublicId: string
+  uploadedAt: Date
+  isActive: boolean
+  __v: number
+}
+
+export interface ResumeFormData {
+  filename: string
+  cloudinaryUrl: string
+  cloudinaryPublicId: string
+}
